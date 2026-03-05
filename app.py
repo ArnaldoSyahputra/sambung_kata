@@ -119,20 +119,7 @@ st.markdown("""
     background: rgba(162,155,254,0.3) !important;
 }
 
-/* Reset button di sidebar */
-section[data-testid="stSidebar"] .stButton > button {
-    background: linear-gradient(135deg, #6c5ce7, #a29bfe) !important;
-    text-align: center !important;
-    transform: none !important;
-    border: none !important;
-    font-size: 0.9rem !important;
-}
-section[data-testid="stSidebar"] .stButton > button:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 20px rgba(108,92,231,0.5) !important;
-}
-
-/* Used words */
+/* Hide streamlit default elements */
 .used-chip {
     display: inline-block;
     background: rgba(255,255,255,0.07);
@@ -168,6 +155,7 @@ section[data-testid="stSidebar"] * { color: #dfe6e9 !important; }
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
 header {visibility: hidden;}
+section[data-testid="stSidebar"] {display: none !important;}
 
 .copyright {
     text-align: center;
@@ -192,42 +180,6 @@ st.markdown("""
 # Hitung statistik sekali, dipakai sidebar + main panel
 used_count = len(st.session_state.used_words)
 predator_count = sum(1 for w in st.session_state.used_words if w[-1] in rare_letters)
-
-# Sidebar (tetap ada untuk desktop)
-with st.sidebar:
-    st.markdown('<div class="section-title">📊 Statistik</div>', unsafe_allow_html=True)
-
-    used_count = len(st.session_state.used_words)
-    predator_count = sum(1 for w in st.session_state.used_words if w[-1] in rare_letters)
-
-    col_s1, col_s2 = st.columns(2)
-    with col_s1:
-        st.markdown(f'<div class="stat-card"><div class="stat-number">{used_count}</div><div class="stat-label">Terpakai</div></div>', unsafe_allow_html=True)
-    with col_s2:
-        st.markdown(f'<div class="stat-card"><div class="stat-number">{len(all_words)//1000}K</div><div class="stat-label">Database</div></div>', unsafe_allow_html=True)
-
-    col_s3, col_s4 = st.columns(2)
-    with col_s3:
-        st.markdown(f'<div class="stat-card"><div class="stat-number" style="color:#ff6b81;">{predator_count}</div><div class="stat-label">Predator</div></div>', unsafe_allow_html=True)
-    with col_s4:
-        st.markdown(f'<div class="stat-card"><div class="stat-number" style="color:#55efc4;">{used_count - predator_count}</div><div class="stat-label">Biasa</div></div>', unsafe_allow_html=True)
-
-    st.markdown('<div class="section-title">🔥 Huruf Predator</div>', unsafe_allow_html=True)
-    st.markdown('<div style="color:#ff6b81; font-size:1.5rem; font-weight:800; letter-spacing:8px; text-align:center; padding:10px 0;">Q X Z V F</div>', unsafe_allow_html=True)
-    st.markdown('<div style="color:rgba(255,255,255,0.4); font-size:0.8rem; text-align:center;">Akhiri kata dengan huruf ini<br>untuk menyerang lawan!</div>', unsafe_allow_html=True)
-
-    if st.session_state.last_word:
-        last = st.session_state.last_word
-        ending = last[-1].upper()
-        color = "#ff6b81" if last[-1] in rare_letters else "#a29bfe"
-        st.markdown('<div class="section-title">⏮ Kata Terakhir</div>', unsafe_allow_html=True)
-        st.markdown(f'<div style="text-align:center; padding:10px; background:rgba(255,255,255,0.05); border-radius:12px; margin:8px 0;"><div style="color:white; font-weight:800; font-size:1.2rem;">{last.upper()}</div><div style="font-size:0.8rem; color:rgba(255,255,255,0.5);">Berikutnya harus awalan:</div><div style="color:{color}; font-size:2rem; font-weight:900;">{ending}</div></div>', unsafe_allow_html=True)
-
-    st.markdown("<br>", unsafe_allow_html=True)
-    if st.button("🔄 Reset Semua", use_container_width=True):
-        st.session_state.used_words = set()
-        st.session_state.last_word = None
-        st.rerun()
 
 col1, col2, col3 = st.columns([1, 3, 1])
 with col2:
